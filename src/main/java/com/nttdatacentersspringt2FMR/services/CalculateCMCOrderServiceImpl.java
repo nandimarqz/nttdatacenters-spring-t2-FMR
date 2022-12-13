@@ -3,6 +3,8 @@ package com.nttdatacentersspringt2FMR.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,13 @@ public class CalculateCMCOrderServiceImpl extends CalculateOrderServiceImpl impl
 	@Autowired
 	ProductManagmentServiceI pms;
 	
+	/** Logger para la clase */
+	final Logger CCMCOSLOG = LoggerFactory.getLogger(CalculateCMCOrderServiceImpl.class);
+	
 	@Override
 	public void calculateOrder(Order o) {
+		
+		CCMCOSLOG.debug("Inicio del metodo");
 		
 		// Si el pedido es distinto a null y su id tambien entra en la condicion
 		if(o != null && o.getId() == null) {
@@ -37,6 +44,7 @@ public class CalculateCMCOrderServiceImpl extends CalculateOrderServiceImpl impl
 				
 			}
 			
+			CCMCOSLOG.debug("Calculando precio");
 			// se calcula el impuesto
 			price = ((price * 4) / 100) + price;
 			
@@ -66,6 +74,8 @@ public class CalculateCMCOrderServiceImpl extends CalculateOrderServiceImpl impl
 			super.add(o);
 			
 		}
+		
+		CCMCOSLOG.debug("Fin del metodo");
 	}
 
 }

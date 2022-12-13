@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -28,6 +30,8 @@ import com.nttdatacentersspringt2FMR.services.ProductManagmentServiceI;
 @SpringBootApplication
 public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 
+	private static final String ENDOFMETHOD = "Fin del metodo";
+	private static final String BEGINNINGOFTHEMETHOD = "Inicio del metodo";
 	/** Campos de auditoria */
 	static String updatedUser = "FMR";
 	static Date updatedDate = new Date();
@@ -54,6 +58,9 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 	@Autowired
 	@Qualifier("General")
 	OrderManagmentServiceI oms;
+	
+	/** Logger para la clase */
+	final Logger MAINLOG = LoggerFactory.getLogger(NttdatacentersSpringT2FmrApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(NttdatacentersSpringT2FmrApplication.class, args);
@@ -62,17 +69,26 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		try (Scanner sc = new Scanner(System.in)) {
-
+			MAINLOG.debug(BEGINNINGOFTHEMETHOD);
 			createProducts();
 
 			int option = 0;
 			do {
 
 				Customer c = this.logInOrSingUp(sc);
-				option = this.menu(c, sc);
+				
+				if(c != null) {
+					option = this.menu(c, sc);
+				}else {
+					
+					option = -2;
+					
+				}
+				
 			} while (option == -1);
 
 		}
+		MAINLOG.debug(ENDOFMETHOD);
 
 	}
 
@@ -83,6 +99,8 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 	 * @return Customer
 	 */
 	public Customer logInOrSingUp(Scanner sc) {
+		
+		MAINLOG.debug(BEGINNINGOFTHEMETHOD);
 
 		Customer c = null;
 
@@ -174,6 +192,8 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 			}
 
 		}
+		
+		MAINLOG.debug(ENDOFMETHOD);
 
 		return c;
 
@@ -187,6 +207,8 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 	 * @return Integer
 	 */
 	public int menu(Customer c, Scanner sc) {
+		
+		MAINLOG.debug(BEGINNINGOFTHEMETHOD);
 
 		String menu = """
 
@@ -357,6 +379,8 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 			opcion = sc.nextInt();//Recoge la opcion
 
 		}
+		
+		MAINLOG.debug(ENDOFMETHOD);
 
 		return opcion;
 
@@ -368,18 +392,23 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 	 */
 	public void showProducts() {
 
+		MAINLOG.debug(BEGINNINGOFTHEMETHOD);
+		
 		for (Product p : pms.findAll()) {
 
 			System.out.println(p.getId() + ". Nombre: " + p.getName() + "Precio bruto: " + p.getGrossPrice());
 
 		}
 
+		MAINLOG.debug(ENDOFMETHOD);
 	}
 
 	/**
 	 * Crea productos y los inserta en BBDD
 	 */
 	public void createProducts() {
+		
+		MAINLOG.debug(BEGINNINGOFTHEMETHOD);
 
 		Product p1 = new Product();
 		p1.setName("Logitech g 513 Carbon");
@@ -461,6 +490,8 @@ public class NttdatacentersSpringT2FmrApplication implements CommandLineRunner {
 		pms.add(p8);
 		pms.add(p9);
 		pms.add(p10);
+		
+		MAINLOG.debug(ENDOFMETHOD);
 
 	}
 

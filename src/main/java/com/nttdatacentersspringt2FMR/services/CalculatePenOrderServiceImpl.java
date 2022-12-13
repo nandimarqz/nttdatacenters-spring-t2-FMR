@@ -3,6 +3,8 @@ package com.nttdatacentersspringt2FMR.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,14 @@ public class CalculatePenOrderServiceImpl extends CalculateOrderServiceImpl impl
 
 	@Autowired
 	ProductManagmentServiceI pms;
+	
+	/** Logger para la clase */
+	final Logger CPOSLOG = LoggerFactory.getLogger(CalculatePenOrderServiceImpl.class);
 
 	@Override
 	public void calculateOrder(Order o) {
+		
+		CPOSLOG.debug("Inicio del metodo");
 
 		// Si el pedido es distinto a null y su id tambien entra en la condicion
 		if (o != null && o.getId() == null) {
@@ -37,6 +44,7 @@ public class CalculatePenOrderServiceImpl extends CalculateOrderServiceImpl impl
 
 			}
 
+			CPOSLOG.debug("Calculando pedido");
 			// se calcula el impuesto
 			price = ((price * 21) / 100) + price;
 
@@ -62,6 +70,8 @@ public class CalculatePenOrderServiceImpl extends CalculateOrderServiceImpl impl
 			}
 
 			super.add(o);
+			
+			CPOSLOG.debug("Fin del metodo");
 
 		}
 	}

@@ -2,6 +2,8 @@ package com.nttdatacentersspringt2FMR.services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 	/** Repositorio de los productos */
 	@Autowired
 	ProductRepositoryI pr;
+	
+	/** Logger para la clase */
+	final Logger PMSLOG = LoggerFactory.getLogger(ProductManagmentServiceImpl.class);
 
 	@Override
 	public void add(Product p) {
@@ -28,6 +33,7 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 		// en la condicion
 		if (p != null && p.getId() == null) {
 
+			PMSLOG.debug("Añadiendo producto");
 			pr.save(p);// Guarda el producto en la BBDD
 
 		}
@@ -41,6 +47,7 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 		// condicion
 		if (p != null && p.getId() != null) {
 
+			PMSLOG.debug("Borrando producto");
 			pr.delete(p);// Borrar el producto
 
 		}
@@ -57,6 +64,7 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 			//Si existe el producto entra en la condicion
 			if (pr.existsById(p.getId())) {
 
+				PMSLOG.debug("Actualizando producto");
 				pr.save(p);//Actualiza el producto
 
 			} else {
@@ -72,6 +80,7 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 	@Override
 	public List<Product> findAll() {
 		
+		PMSLOG.debug("Obteniendo todos los productos");
 		//Devuelve todos los productos
 		return pr.findAll();
 	}
@@ -79,6 +88,7 @@ public class ProductManagmentServiceImpl implements ProductManagmentServiceI {
 	@Override
 	public Product findById(Long id) {
 
+		PMSLOG.debug("Obteniendo producto por id");
 		//Devuelve el producto con el id pasado por parametro
 		return pr.findById(id).get();
 	}
